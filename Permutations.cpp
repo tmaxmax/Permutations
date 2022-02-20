@@ -47,7 +47,7 @@ void permutations(const std::vector<int>& set) {
 	{
 		for (unsigned int position = 1; position < set.size(); position++)
 		{
-			std::vector<int> solution = swap(std::move(queue.back()), 0, position);
+			std::vector<int> solution = swap(queue.back(), 0, position);
 			if (valid_solution(solutions, solution))
 			{
 				solutions.push_back(std::move(solution)); 
