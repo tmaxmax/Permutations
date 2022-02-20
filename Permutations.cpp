@@ -3,6 +3,7 @@
 #include <queue>
 #include <iterator>
 #include <algorithm>
+#include <functional>
 
 std::vector<int> numberToSet(int n)
 {
@@ -24,13 +25,13 @@ std::vector<int> swap(std::vector<int> set, int fP, int sP) {
 	return set;
 }
 
-bool is_equal(std::vector<int> v1, std::vector<int> v2) {
+bool is_equal(const std::vector<int>& v1, const std::vector<int>& v2) {
 	return std::equal(v1.begin(), v1.end(), v2.begin(), v2.end());
 }
 
-bool valid_solution(std::vector<std::vector<int>> solutions, std::vector<int> solution)
+bool valid_solution(const std::vector<std::vector<int>>& solutions, const std::vector<int>& solution)
 {
-	for (auto found_solutions : solutions)
+	for (const auto& found_solutions : solutions)
 	{
 		if (is_equal(solution, found_solutions))
 			return false;
@@ -38,24 +39,24 @@ bool valid_solution(std::vector<std::vector<int>> solutions, std::vector<int> so
 	return true;
 }
 
-void permutations(std::vector<int> set) {
+void permutations(const std::vector<int>& set) {
 	std::vector<std::vector<int>> solutions = { set };
-	std::queue<std::vector<int>> queue;
-	queue.push(set);
+	std::queue<std::reference_wrapper<std::vector<int>>> queue;
+	queue.push(solutions[0]);
 	while (!queue.empty())
 	{
 		for (unsigned int position = 1; position < set.size(); position++)
 		{
-			std::vector<int> solution = swap(queue.back(), 0, position);
+			std::vector<int> solution = swap(std::move(queue.back()), 0, position);
 			if (valid_solution(solutions, solution))
 			{
-				solutions.push_back(solution); 
-				queue.push(solution);
+				solutions.push_back(std::move(solution)); 
+				queue.push(solutions.back());
 			}
 		}
 		queue.pop();
 	}
-	for (auto solution : solutions)
+	for (const auto& solution : solutions)
 	{
 		for (auto elem : solution)
 		{
