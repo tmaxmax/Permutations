@@ -42,7 +42,7 @@ bool valid_solution(const std::vector<std::vector<int>>& solutions, const std::v
 void permutations(const std::vector<int>& set) {
 	std::vector<std::vector<int>> solutions = { set };
 	std::queue<std::reference_wrapper<std::vector<int>>> queue;
-	queue.push(solutions[0]);
+	queue.push(solutions.front());
 	while (!queue.empty())
 	{
 		for (unsigned int position = 1; position < set.size(); position++)
